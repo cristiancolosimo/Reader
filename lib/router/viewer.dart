@@ -65,6 +65,8 @@ class _ViewerState extends State<Viewer> {
         pagina = 0;
         capitolo = capitolotemp;
         volume = volumetemp;
+        pickercapitolo = capitolotemp;
+        pickervolume = volumetemp;
       });
     } else if (pagina + 1 ==
         libro.volumi[volume].capitoli[capitolo].image.length) {
@@ -72,6 +74,7 @@ class _ViewerState extends State<Viewer> {
       setState(() {
         pagina = 0;
         capitolo = capitolotemp;
+        pickercapitolo = capitolotemp;
       });
     } else {
       var paginatemp = pagina + 1;

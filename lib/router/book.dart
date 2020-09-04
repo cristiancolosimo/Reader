@@ -131,14 +131,17 @@ class _VolumiState extends State<Volumi> {
           onTap: tap,
           child: Text(
             widget.volume.nome,
-            style: TextStyle(color: Colors.orange, fontSize: 17),
+            style: TextStyle(color: Colors.orange, fontSize: 20),
           ),
         ),
         if (open)
           ...widget.volume.capitoli.asMap().entries.map(
                 (cap) => GestureDetector(
                   onTap: () => goToReader(cap.key),
-                  child: Text(cap.value.name),
+                  child: Text(
+                    cap.value.name,
+                    style: TextStyle(fontSize: 17),
+                  ),
                 ),
               )
       ],
