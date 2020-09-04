@@ -66,17 +66,15 @@ class _LibroState extends State<Libro> {
   Widget build(BuildContext context) {
     return Flex(
       direction: Axis.vertical,
-      children: [
-        ...libro.volumi
-            .asMap()
-            .entries
-            .map((volume) => new Volumi(
-                  volume: volume.value,
-                  libro: libro,
-                  volindex: volume.key,
-                ))
-            .toList()
-      ],
+      children: libro.volumi
+          .asMap()
+          .entries
+          .map((volume) => new Volumi(
+                volume: volume.value,
+                libro: libro,
+                volindex: volume.key,
+              ))
+          .toList(),
     );
   }
 }

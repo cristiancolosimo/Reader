@@ -130,11 +130,9 @@ class _ViewerState extends State<Viewer> {
         showMaterialScrollPicker(
           context: context,
           title: "Scegli capitolo",
-          items: <String>[
-            ...libro.volumi[pickervolume].capitoli.map((cap) {
-              return cap.name;
-            }).toList()
-          ],
+          items: libro.volumi[pickervolume].capitoli.map((cap) {
+            return cap.name;
+          }).toList(),
           selectedItem:
               libro.volumi[pickervolume].capitoli[pickercapitolo].name,
           onChanged: (value) {
