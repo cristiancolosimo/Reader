@@ -57,25 +57,8 @@ class _LibroState extends State<Libro> {
     var response = await http.get(url + widget.jsonpath);
     var jsondata = response.body;
     var json = jsonDecode(jsondata);
-    List<VolumeOBJ> volumi = [
-      ...json["volumi"].map((volume) {
-        List<CapitoloOBJ> voltemp = [
-          ...volume["capitoli"].map((capitolo) {
-            List<String> capImg = [
-              ...capitolo["image"].map((img) => img.toString()).toList()
-            ];
-            return CapitoloOBJ(capImg, capitolo["name"], capImg.length);
-          })
-        ];
-        return VolumeOBJ(volume["nome"], voltemp, voltemp.length);
-      })
-    ];
-    List<String> generi = [
-      ...json["generi"].map((img) => img.toString()).toList()
-    ];
     setState(() {
-      libro = LibroOBJ(json["nome"], json["anno"], volumi, generi,
-          json["copertina"], volumi.length);
+      libro = LibroOBJ.fromJson(json);
     });
   }
 

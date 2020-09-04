@@ -69,8 +69,7 @@ class _MangalistState extends State<MangaList> {
     var jsonlist = List.from(jsonDecode(response.body));
     List<MangaOBJ> list = [];
     jsonlist.forEach((element) {
-      list.add(
-          MangaOBJ(element["copertina"], element["nome"], element["json"]));
+      list.add(MangaOBJ.fromJson(element));
     });
     setState(() {
       mangas = list;
