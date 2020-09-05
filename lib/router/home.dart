@@ -1,16 +1,19 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import "../components/object.dart";
 import '../components/const.dart';
 import '../components/download.dart';
 
 class Manga extends StatelessWidget {
-  Manga({this.copertina, this.json, this.nome, this.context});
+  Manga({this.copertina, this.json, this.nome, this.context, this.path});
   final String copertina;
   final String json;
   final String nome;
   final BuildContext context;
+  final String path;
   void changeroute(MangaOBJ manga) {
     Navigator.pushNamed(
       context,
@@ -21,13 +24,13 @@ class Manga extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    downloadCopertina(copertina, url);
+    //downloadCopertina(copertina, url);
     return GestureDetector(
       onTap: () {
         changeroute(MangaOBJ(copertina, nome, json));
       }, // handle your image tap here
-      child: Image.network(
-        url + copertina,
+      child: Image(
+        image: getImageProvider(copertina, path, url),
         fit: BoxFit.cover, // this is the solution for border
         width: MediaQuery.of(context).size.width / 2.4,
         height: 300.0,
@@ -66,6 +69,8 @@ class MangaList extends StatefulWidget {
 
 class _MangalistState extends State<MangaList> {
   var mangas = <MangaOBJ>[];
+  String path = "";
+
   void load() async {
     var response = await http.get(url + "master.json");
     var jsonlist = List.from(jsonDecode(response.body));
@@ -73,8 +78,11 @@ class _MangalistState extends State<MangaList> {
     jsonlist.forEach((element) {
       list.add(MangaOBJ.fromJson(element));
     });
+
+    var temppath = (await getApplicationDocumentsDirectory()).path;
     setState(() {
       mangas = list;
+      path = temppath;
     });
   }
 
@@ -108,6 +116,7 @@ class _MangalistState extends State<MangaList> {
                         json: manga.json,
                         nome: manga.nome,
                         context: context,
+                        path: path,
                       ))
                   .toList(),
             ])
