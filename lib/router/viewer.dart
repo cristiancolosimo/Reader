@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:reader/components/download.dart';
 import '../components/const.dart';
 import "../components/object.dart";
 import 'package:swipedetector/swipedetector.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
+import '../components/global.dart' as globals;
 
 class ViewerRoute extends StatelessWidget {
   @override
@@ -221,8 +223,11 @@ class _ViewerState extends State<Viewer> {
                     ))
               ],
             ),
-            Image.network(
-              url + libro.volumi[volume].capitoli[capitolo].image[pagina],
+            Image(
+              image: getImageProviderViewer(
+                  libro.volumi[volume].capitoli[capitolo].image[pagina],
+                  globals.path,
+                  url),
               width: MediaQuery.of(context).size.width,
             )
           ],

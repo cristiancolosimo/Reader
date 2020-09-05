@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../components/const.dart';
 import "../components/object.dart";
+import '../components/download.dart';
+import '../components/global.dart' as globals;
 
 class BookRoute extends StatelessWidget {
   @override
@@ -19,10 +21,10 @@ class BookRoute extends StatelessWidget {
             direction: Axis.horizontal,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.network(
-                url + args.copertina,
-                height: 300,
-                width: 150,
+              Image(
+                image: getImageProvider(args.copertina, globals.path, url),
+                width: 300.0,
+                height: 150.0,
               ),
               Text(args.nome),
             ],
@@ -30,10 +32,7 @@ class BookRoute extends StatelessWidget {
           Libro(args.json),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        child: Icon(Icons.access_alarms),
-      ),
+      floatingActionButton: null,
     );
   }
 }
@@ -117,12 +116,24 @@ class _VolumiState extends State<Volumi> {
         ),
         if (open)
           ...widget.volume.capitoli.asMap().entries.map(
-                (cap) => GestureDetector(
-                  onTap: () => goToReader(cap.key),
-                  child: Text(
-                    cap.value.name,
-                    style: TextStyle(fontSize: 17),
-                  ),
+                (cap) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () => goToReader(cap.key),
+                      child: Text(
+                        cap.value.name,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => goToReader(cap.key),
+                      child: Text(
+                        "Download",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    )
+                  ],
                 ),
               )
       ],
