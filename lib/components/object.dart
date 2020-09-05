@@ -27,8 +27,6 @@ class VolumeOBJ {
         return CapitoloOBJ.fromJson(capitolo);
       })
     ];
-    print(json
-        .encode(VolumeOBJ(jsontemp["nome"], voltemp, voltemp.length).toJson()));
     return VolumeOBJ(jsontemp["nome"], voltemp, voltemp.length);
   }
   Map<String, dynamic> toJson() => {
