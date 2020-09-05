@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class CapitoloOBJ {
   List<String> image; //array di pagine
   String name; //nome del capitolo
