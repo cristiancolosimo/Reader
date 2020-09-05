@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import "../components/object.dart";
 import '../components/const.dart';
+import '../components/download.dart';
 
 class Manga extends StatelessWidget {
   Manga({this.copertina, this.json, this.nome, this.context});
@@ -20,6 +21,7 @@ class Manga extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    downloadCopertina(copertina, url);
     return GestureDetector(
       onTap: () {
         changeroute(MangaOBJ(copertina, nome, json));
