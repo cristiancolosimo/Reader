@@ -1,14 +1,19 @@
+import 'dart:convert';
+
 class CapitoloOBJ {
   List<String> image; //array di pagine
   String name; //nome del capitolo
   int lengthpag;
   CapitoloOBJ(this.image, this.name, this.lengthpag);
   factory CapitoloOBJ.fromJson(dynamic json) {
-    List<String> capImg = [
-      ...json["image"].map((img) => img.toString()).toList()
-    ];
+    List<String> capImg = [...json["image"].map((img) => img.toString())];
+
     return CapitoloOBJ(capImg, json["name"], capImg.length);
   }
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'image': image,
+      };
 }
 
 class VolumeOBJ {
@@ -16,14 +21,20 @@ class VolumeOBJ {
   List<CapitoloOBJ> capitoli;
   int lengthcap;
   VolumeOBJ(this.nome, this.capitoli, this.lengthcap);
-  factory VolumeOBJ.fromJson(dynamic json) {
+  factory VolumeOBJ.fromJson(dynamic jsontemp) {
     List<CapitoloOBJ> voltemp = [
-      ...json["capitoli"].map((capitolo) {
+      ...jsontemp["capitoli"].map((capitolo) {
         return CapitoloOBJ.fromJson(capitolo);
       })
     ];
-    return VolumeOBJ(json["nome"], voltemp, voltemp.length);
+    print(json
+        .encode(VolumeOBJ(jsontemp["nome"], voltemp, voltemp.length).toJson()));
+    return VolumeOBJ(jsontemp["nome"], voltemp, voltemp.length);
   }
+  Map<String, dynamic> toJson() => {
+        'nome': nome,
+        'capitoli': capitoli,
+      };
 }
 
 class LibroOBJ {
@@ -47,6 +58,14 @@ class LibroOBJ {
     return LibroOBJ(json["nome"], json["anno"], volumi, generi,
         json["copertina"], volumi.length);
   }
+
+  Map<String, dynamic> toJson() => {
+        "nome": nome,
+        "anno": anno,
+        "volumi": volumi,
+        "generi": generi,
+        "copertina": copertina,
+      };
 }
 
 class MangaOBJ {
@@ -57,6 +76,8 @@ class MangaOBJ {
   factory MangaOBJ.fromJson(dynamic json) {
     return MangaOBJ(json["copertina"], json["nome"], json["json"]);
   }
+  Map<String, dynamic> toJson() =>
+      {"copertina": copertina, "nome": nome, "json": json};
 }
 
 class ViewerData {
