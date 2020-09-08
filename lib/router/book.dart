@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:reader/components/global.dart';
 import '../components/const.dart';
 import "../components/object.dart";
 import '../components/download.dart';
@@ -17,14 +18,12 @@ class BookRoute extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          Flex(
-            direction: Axis.horizontal,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          Row(
             children: [
               Image(
                 image: getImageProvider(args.copertina, globals.path, url),
-                width: 300.0,
-                height: 150.0,
+                width: 150.0,
+                height: 225.0,
               ),
               Text(args.nome),
             ],
@@ -103,6 +102,10 @@ class _VolumiState extends State<Volumi> {
     );
   }
 
+  void redraw() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Flex(
@@ -126,13 +129,21 @@ class _VolumiState extends State<Volumi> {
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () => goToReader(cap.key),
-                      child: Text(
-                        "Download",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    )
+                    if (checkImage(cap.value.image[0]))
+                      GestureDetector(
+                          onTap: () => deleteCap(cap.value, redraw),
+                          child: Text(
+                            "Scaricato",
+                            style: TextStyle(fontSize: 18),
+                          ))
+                    else
+                      GestureDetector(
+                        onTap: () => downloadCap(cap.value, url, redraw),
+                        child: Text(
+                          "Download",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      )
                   ],
                 ),
               )

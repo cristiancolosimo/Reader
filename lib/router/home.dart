@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
+import 'package:reader/components/global.dart';
 import "../components/object.dart";
 import '../components/const.dart';
 import '../components/download.dart';
@@ -49,12 +49,15 @@ class Home extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: null,
+          )
+        ],
       ),
       body: MangaList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onPressed,
-        child: Icon(Icons.access_alarms),
-      ),
+      floatingActionButton: null,
     );
   }
 }
@@ -68,7 +71,6 @@ class MangaList extends StatefulWidget {
 
 class _MangalistState extends State<MangaList> {
   var mangas = <MangaOBJ>[];
-  String path = "";
 
   void load() async {
     var response = await http.get(url + "master.json");
@@ -78,10 +80,8 @@ class _MangalistState extends State<MangaList> {
       list.add(MangaOBJ.fromJson(element));
     });
 
-    var temppath = (await getApplicationDocumentsDirectory()).path;
     setState(() {
       mangas = list;
-      path = temppath;
     });
   }
 
