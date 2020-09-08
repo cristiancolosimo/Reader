@@ -128,7 +128,6 @@ class _ViewerState extends State<Viewer> {
   Widget sceglicapitolo() {
     return GestureDetector(
       onTap: () {
-        print("premuto");
         showMaterialScrollPicker(
           context: context,
           title: "Scegli capitolo",
@@ -164,7 +163,6 @@ class _ViewerState extends State<Viewer> {
   Widget sceglivolume() {
     return GestureDetector(
       onTap: () {
-        print("premuto");
         showMaterialScrollPicker(
           context: context,
           title: "Scegli volume",
@@ -198,11 +196,9 @@ class _ViewerState extends State<Viewer> {
   Widget build(BuildContext context) {
     return SwipeDetector(
         onSwipeLeft: () {
-          print("avanti");
           next();
         },
         onSwipeRight: () {
-          print("indietro");
           prev();
         },
         child: ListView(
