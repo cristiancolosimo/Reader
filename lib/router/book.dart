@@ -67,10 +67,13 @@ class _LibroState extends State<Libro> {
       children: libro.volumi
           .asMap()
           .entries
-          .map((volume) => new Volumi(
-                volume: volume.value,
-                libro: libro,
-                volindex: volume.key,
+          .map((volume) => Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Volumi(
+                  volume: volume.value,
+                  libro: libro,
+                  volindex: volume.key,
+                ),
               ))
           .toList(),
     );
@@ -119,32 +122,35 @@ class _VolumiState extends State<Volumi> {
         ),
         if (open)
           ...widget.volume.capitoli.asMap().entries.map(
-                (cap) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () => goToReader(cap.key),
-                      child: Text(
-                        cap.value.name,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    if (checkImage(cap.value.image[0]))
+                (cap) => Padding(
+                  padding: EdgeInsets.only(bottom: 15, left: 5, right: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       GestureDetector(
-                          onTap: () => deleteCap(cap.value, redraw),
-                          child: Text(
-                            "Scaricato",
-                            style: TextStyle(fontSize: 18),
-                          ))
-                    else
-                      GestureDetector(
-                        onTap: () => downloadCap(cap.value, url, redraw),
+                        onTap: () => goToReader(cap.key),
                         child: Text(
-                          "Download",
+                          cap.value.name,
                           style: TextStyle(fontSize: 18),
                         ),
-                      )
-                  ],
+                      ),
+                      if (checkImage(cap.value.image[0]))
+                        GestureDetector(
+                            onTap: () => deleteCap(cap.value, redraw),
+                            child: Text(
+                              "Scaricato",
+                              style: TextStyle(fontSize: 18),
+                            ))
+                      else
+                        GestureDetector(
+                          onTap: () => downloadCap(cap.value, url, redraw),
+                          child: Text(
+                            "Download",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        )
+                    ],
+                  ),
                 ),
               )
       ],
