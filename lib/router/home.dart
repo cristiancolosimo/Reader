@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:reader/components/global.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import "../components/object.dart";
 import '../components/download.dart';
 
@@ -75,14 +76,19 @@ class MangaList extends StatefulWidget {
 
 class _MangalistState extends State<MangaList> {
   var mangas = <MangaOBJ>[];
-  var httpclient = http.Client();
   void load() async {
-    String response = "[]";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String response = prefs.getString("master.json") ?? "[]";
     try {
-      var resp = await httpclient
-          .get(url + "master.json")
-          .timeout(Duration(seconds: 2));
-      response = resp.body;
+      var resp = await http.get(url + "master.json").timeout(
+            Duration(seconds: 1, milliseconds: 300),
+            onTimeout: () => null,
+          );
+      if (resp != null) {
+        response = resp.body;
+        prefs.setString("master.json", resp.body);
+      }
     } catch (e) {}
     var jsonlist = List.from(jsonDecode(response));
     List<MangaOBJ> list = [];

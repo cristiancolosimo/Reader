@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import "../components/object.dart";
 import '../components/download.dart';
 import '../components/global.dart' as globals;
+import 'package:http/http.dart' as http;
 
 class BookRoute extends StatelessWidget {
   @override
@@ -50,44 +50,65 @@ class _LibroState extends State<Libro> {
     this.getHttpdata();
   }
 
-  bool connectionopen = false;
-  var httpclient = http.Client();
   void fallback() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var jsondata = prefs.getString(widget.jsonpath) ?? "{}";
-    var json = jsonDecode(jsondata);
-    setState(() {
-      libro = LibroOBJ.fromJson(json);
-    });
+    var jsondata = prefs.getString(widget.jsonpath) ?? "";
+    if (jsondata != "") {
+      var json = jsonDecode(jsondata);
+      setState(() {
+        libro = LibroOBJ.fromJson(json);
+      });
+    }
   }
 
   LibroOBJ libro = LibroOBJ("", "", [], [], "", 0);
   void getHttpdata() async {
     try {
-      connectionopen = true;
-      var response = await httpclient
-          .get(
-            //http.get
-            globals.url + widget.jsonpath,
-          )
-          .timeout(Duration(seconds: 2))
-          .catchError(fallback);
-
-      if (response.statusCode == 200) {
-        var jsondata = response.body;
+      var response = await http.get(globals.url + widget.jsonpath).timeout(
+        Duration(seconds: 1),
+        onTimeout: () {
+          return null;
+        },
+      );
+      if (response != null) {
+        String jsondata = response.body;
         SharedPreferences prefs = await SharedPreferences.getInstance();
+
         prefs.setString(widget.jsonpath, jsondata);
-        print("saved");
         var json = jsonDecode(jsondata);
         setState(() {
           libro = LibroOBJ.fromJson(json);
-          connectionopen = false;
         });
+      } else {
+        fallback();
       }
-    } catch (e) {
-      fallback();
-    }
+    } catch (e) {}
+    /*Dio dio = new Dio();
+    dio.options.connectTimeout = 1000;
+    dio.options.receiveTimeout = 1000;
+    dio.interceptors.add(InterceptorsWrapper(
+        onRequest: (RequestOptions options) => {},
+        onResponse: (Response response) => print(response.data),
+        onError: (DioError dioError) => {fallback()}));
+    try {
+      Response response = await dio.get(globals.url + widget.jsonpath);
+      print(response.data);
+      if (response.data["nome"] == null) return;
+
+      String jsondata = response.data.toString();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+//
+      prefs.setString(widget.jsonpath, jsondata);
+      var json = jsonDecode(jsondata);
+      setState(() {
+        libro = LibroOBJ.fromJson(json);
+      });
+    } on DioError catch (e) {
+      if (e.response.statusCode == 400) {
+        print("error 404");
+      }
+    }*/
   }
 
   @override
