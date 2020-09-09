@@ -4,23 +4,32 @@ import './router/home.dart';
 import 'router/book.dart';
 import './router/viewer.dart';
 import './components/global.dart' as globals;
+import './router/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-const url = "http://192.168.1.5:8080/";
 void main() => runApp(App());
 
 // ignore: must_be_immutable
 class App extends StatelessWidget {
+  void setGlobals() async {
+    var directory = await getApplicationDocumentsDirectory();
+    globals.path = directory.path;
+    var pref = await SharedPreferences.getInstance();
+    var url = pref.getString("url") ?? globals.url;
+    globals.url = url;
+  }
+
   @override
   Widget build(BuildContext context) {
-    getApplicationDocumentsDirectory()
-        .then((value) => globals.path = value.path);
+    setGlobals();
     return MaterialApp(
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
         '/': (context) => Home(),
         "/book": (context) => BookRoute(),
-        "/read": (context) => ViewerRoute()
+        "/read": (context) => ViewerRoute(),
+        "/settings": (context) => SettingsRoute()
         // When navigating to the "/second" route, build the SecondScreen widget.
       },
     );

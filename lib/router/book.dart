@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:reader/components/global.dart';
-import '../components/const.dart';
 import "../components/object.dart";
 import '../components/download.dart';
 import '../components/global.dart' as globals;
@@ -21,7 +19,8 @@ class BookRoute extends StatelessWidget {
           Row(
             children: [
               Image(
-                image: getImageProvider(args.copertina, globals.path, url),
+                image:
+                    getImageProvider(args.copertina, globals.path, globals.url),
                 width: 150.0,
                 height: 225.0,
               ),
@@ -52,7 +51,7 @@ class _LibroState extends State<Libro> {
 
   LibroOBJ libro = LibroOBJ("", "", [], [], "", 0);
   Future<void> getHttpdata() async {
-    var response = await http.get(url + widget.jsonpath);
+    var response = await http.get(globals.url + widget.jsonpath);
     var jsondata = response.body;
     var json = jsonDecode(jsondata);
     setState(() {
@@ -143,7 +142,8 @@ class _VolumiState extends State<Volumi> {
                             ))
                       else
                         GestureDetector(
-                          onTap: () => downloadCap(cap.value, url, redraw),
+                          onTap: () =>
+                              downloadCap(cap.value, globals.url, redraw),
                           child: Text(
                             "Download",
                             style: TextStyle(fontSize: 18),

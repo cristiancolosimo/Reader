@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:reader/components/global.dart';
 import "../components/object.dart";
-import '../components/const.dart';
 import '../components/download.dart';
 
 class Manga extends StatelessWidget {
@@ -52,7 +51,12 @@ class Home extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: null,
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                '/settings',
+              );
+            },
           )
         ],
       ),

@@ -37,9 +37,8 @@ void deleteImg(String url) {
   file.deleteSync();
 }
 
-String getsha1path(url) {
-  return "/" + sha1.convert(utf8.encode(url)).toString() + ".jpg";
-}
+String getsha1path(url) =>
+    "/" + sha1.convert(utf8.encode(url)).toString() + ".jpg";
 
 ImageProvider getImageProvider(String urlimg, path, server) {
   var file = IO.File(path + getsha1path(urlimg));

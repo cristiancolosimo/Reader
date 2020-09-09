@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reader/components/download.dart';
-import '../components/const.dart';
 import "../components/object.dart";
 import 'package:swipedetector/swipedetector.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
@@ -223,7 +222,7 @@ class _ViewerState extends State<Viewer> {
               image: getImageProviderViewer(
                   libro.volumi[volume].capitoli[capitolo].image[pagina],
                   globals.path,
-                  url),
+                  globals.url),
               width: MediaQuery.of(context).size.width,
             )
           ],
