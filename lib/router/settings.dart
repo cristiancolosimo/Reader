@@ -20,16 +20,41 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  void changeurl(value) async {
+  String urlsetting = "";
+  void changeurl(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("url", value);
     globals.url = value;
+    print(value);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initsettings();
+  }
+
+  void initsettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var urltemp = prefs.getString("url");
+    print(urltemp);
+    myController.text = urltemp;
+  }
+
+  final myController = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    myController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      onChanged: (value) => {print(value)},
+    return TextFormField(
+      controller: myController,
+      onFieldSubmitted: changeurl,
       decoration: InputDecoration(
           border: InputBorder.none, hintText: 'Enter a search term'),
     );

@@ -75,10 +75,16 @@ class MangaList extends StatefulWidget {
 
 class _MangalistState extends State<MangaList> {
   var mangas = <MangaOBJ>[];
-
+  var httpclient = http.Client();
   void load() async {
-    var response = await http.get(url + "master.json");
-    var jsonlist = List.from(jsonDecode(response.body));
+    String response = "[]";
+    try {
+      var resp = await httpclient
+          .get(url + "master.json")
+          .timeout(Duration(seconds: 2));
+      response = resp.body;
+    } catch (e) {}
+    var jsonlist = List.from(jsonDecode(response));
     List<MangaOBJ> list = [];
     jsonlist.forEach((element) {
       list.add(MangaOBJ.fromJson(element));

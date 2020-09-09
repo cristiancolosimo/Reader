@@ -17,7 +17,6 @@ class App extends StatelessWidget {
     var pref = await SharedPreferences.getInstance();
     var url = pref.getString("url") ?? globals.url;
     globals.url = url;
-    print(url);
   }
 
   @override

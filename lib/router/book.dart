@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import "../components/object.dart";
 import '../components/download.dart';
 import '../components/global.dart' as globals;
@@ -49,14 +50,44 @@ class _LibroState extends State<Libro> {
     this.getHttpdata();
   }
 
-  LibroOBJ libro = LibroOBJ("", "", [], [], "", 0);
-  Future<void> getHttpdata() async {
-    var response = await http.get(globals.url + widget.jsonpath);
-    var jsondata = response.body;
+  bool connectionopen = false;
+  var httpclient = http.Client();
+  void fallback() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var jsondata = prefs.getString(widget.jsonpath) ?? "{}";
     var json = jsonDecode(jsondata);
     setState(() {
       libro = LibroOBJ.fromJson(json);
     });
+  }
+
+  LibroOBJ libro = LibroOBJ("", "", [], [], "", 0);
+  void getHttpdata() async {
+    try {
+      connectionopen = true;
+      var response = await httpclient
+          .get(
+            //http.get
+            globals.url + widget.jsonpath,
+          )
+          .timeout(Duration(seconds: 2))
+          .catchError(fallback);
+
+      if (response.statusCode == 200) {
+        var jsondata = response.body;
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString(widget.jsonpath, jsondata);
+        print("saved");
+        var json = jsonDecode(jsondata);
+        setState(() {
+          libro = LibroOBJ.fromJson(json);
+          connectionopen = false;
+        });
+      }
+    } catch (e) {
+      fallback();
+    }
   }
 
   @override
