@@ -28,11 +28,14 @@ class Manga extends StatelessWidget {
       onTap: () {
         changeroute(MangaOBJ(copertina, nome, json));
       }, // handle your image tap here
-      child: Image(
-        image: getImageProvider(copertina, path, url),
-        fit: BoxFit.cover, // this is the solution for border
-        width: MediaQuery.of(context).size.width / 2.4,
-        height: 300.0,
+      child: Hero(
+        tag: copertina,
+        child: Image(
+          image: getImageProvider(copertina, path, url),
+          fit: BoxFit.cover, // this is the solution for border
+          width: MediaQuery.of(context).size.width / 2.4,
+          height: 300.0,
+        ),
       ),
     );
   }

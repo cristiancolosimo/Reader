@@ -19,11 +19,14 @@ class BookRoute extends StatelessWidget {
         children: <Widget>[
           Row(
             children: [
-              Image(
-                image:
-                    getImageProvider(args.copertina, globals.path, globals.url),
-                width: 150.0,
-                height: 225.0,
+              Hero(
+                tag: args.copertina,
+                child: Image(
+                  image: getImageProvider(
+                      args.copertina, globals.path, globals.url),
+                  width: 150.0,
+                  height: 225.0,
+                ),
               ),
               Text(args.nome),
             ],
